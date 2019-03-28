@@ -1,35 +1,40 @@
 package br.com.ceci.aulaapi.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Categoria implements Serializable {
+public class Produto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	private String nome;
 	
-	@OneToMany(mappedBy = "categoria")
-	private List<Produto> produtos = new ArrayList<>();
+	private Integer id;
+	private String nomeProduto;
+	private BigDecimal preco;
+	
+	@ManyToOne
+	@JoinColumn(name = "categoria_id")
+	private Categoria categoria;
 
-	public Categoria() {
-
+	public Produto() {
+		
 	}
 
-	public Categoria(Integer id, String nome) {
+	public Produto(Integer id, String nomeProduto, BigDecimal preco, Categoria categoria) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.nomeProduto = nomeProduto;
+		this.preco = preco;
+		this.categoria = categoria;
 	}
 
 	public Integer getId() {
@@ -40,12 +45,28 @@ public class Categoria implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeProduto() {
+		return nomeProduto;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeProduto(String nomeProduto) {
+		this.nomeProduto = nomeProduto;
+	}
+
+	public BigDecimal getPreco() {
+		return preco;
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+	
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
 	@Override
@@ -64,7 +85,7 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Produto other = (Produto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -72,5 +93,5 @@ public class Categoria implements Serializable {
 			return false;
 		return true;
 	}
-
+	
 }
